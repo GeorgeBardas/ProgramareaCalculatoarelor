@@ -21,30 +21,17 @@ struct lista *construireLista(int k,struct lista*l)
     return aux;
 }
 
-void afisare(struct lista*l)
+struct lista *initListaTastatura(struct lista *l, int numarValori)
 {
-    struct lista *p;
-    printf("NULL");
-    for(p=l;p;p=p->next)
-        printf("<=>%lf",p->k);
-    printf("<=>NULL\n");
-}
-
-struct lista *initListaTastatura(struct lista *l)
-{
-    int ci, k = 1;
-    char c1, ck, cc[5];
+    double val;
     l = NULL;
     
-    while (k!=-1)
+    printf("Initializare lista cu %d valori: \n", numarValori);
+    for (int i=0;i<numarValori;i++)
     {
-        printf("VALOARE : ");
-        scanf("%s",cc);c1=getchar();
-        if (strcmp(cc, "n")) k=1;
-        else k = -1;
-        ci = atoi(cc);
-        if (k != -1)
-        l = construireLista(ci,l);
+        printf("Valoare %d: ", i+1);
+        scanf("%lf", &val);
+        l = construireLista(val,l);
     }
 
     return(l);
@@ -82,23 +69,36 @@ struct lista *concatListe(struct lista *l1,struct lista *l2)
 double maxLista(struct lista *l)
 {
     struct lista *p;
-    int max=-32800;
+    int max=l->k;
     for(p=l;p;p=p->next)
-    if(p->k>max)
+    if(p->k > max)
         max=p->k;
     return max;
 }
 
+double minLista(struct lista *l)
+{
+    struct lista *p;
+    int min=l->k;
+    for(p=l;p;p=p->next)
+    if(p->k < min)
+        min = p->k;
+    return min;
+}
+
 int main() {
-    struct lista *lista1, *lista2;
+    struct lista *lista1, *lista2, *listConcat;
     
-//    lista1 = initListaTastatura(lista1); // --- INITIALIZARE DE LA TASTATURA PANA LA CARACTERUL "n" ---
-//    lista2 = initListaTastatura(lista2);
+    lista1 = initListaTastatura(lista1, N); // --- INITIALIZARE DE LA TASTATURA A LISTEI CU x VALORI ---
+    lista2 = initListaTastatura(lista2, M);
     
-    lista1 = initListaAutomat(lista1, N); // --- INITIALIZARE AUTOMATA PANA LA O CONSTANTA ---
-    lista2 = initListaAutomat(lista2, M);
+//    lista1 = initListaAutomat(lista1, N); // --- INITIALIZARE AUTOMATA PANA LA O CONSTANTA ---
+//    lista2 = initListaAutomat(lista2, M);
     
-    printf("%lf\n", maxLista(concatListe(lista1, lista2)));
+    listConcat = concatListe(lista1, lista2);
+    
+    printf("Valoarea maxima din cele doua liste concatenate = %lf\n", maxLista(listConcat));
+    printf("Valoarea minima din cele doua liste concatenate = %lf\n", minLista(listConcat));
     
     return 0;
 }
